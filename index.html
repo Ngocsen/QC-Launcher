@@ -3,170 +3,165 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- 4 dòng vàng dưới đây giúp trang biến thành App khi thêm vào Màn hình chính -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Bật Phím Tắt</title>
+    <meta name="apple-mobile-web-app-title" content="AssistiveTouch" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%23000'/%3E%3Cpath d='M60 20C45 20 35 30 35 45v10h-5v40h60V55h-5V45c0-15-10-25-25-25zm0 10c10 0 15 8 15 15v10H45V45c0-7 5-15 15-15zM45 65h30v20H45V65z' fill='%23fff'/%3E%3C/svg%3E" />
+
+    <title>AssistiveTouch</title>
     
-    <!-- Liquid Glass style embedded -->
     <style>
+        /* Reset style cơ bản */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            /* Nền mờ lung linh mang sắc tím Sen */
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            align-items: center;
+            /* Nền Gradient mát mắt chuẩn iOS 18 */
+            background: linear-gradient(135deg, #d4bbfc 0%, #8ec5fc 50%, #b8d8fb 100%);
             padding: 20px;
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px); /* Quan trọng cho iOS Safari */
-            border-radius: 32px;
-            padding: 30px 24px;
+
+        /* Phong cách Liquid Glass siêu cấp */
+        .glass-card {
             width: 100%;
-            max-width: 360px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 
-                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            padding: 40px 24px 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             text-align: center;
+            transition: transform 0.2s ease;
         }
-        h2 {
-            color: #1c1c1e;
-            font-size: 24px;
+        
+        .glass-card h2 {
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 12px;
-        }
-        p.desc {
-            color: #3a3a3c;
-            font-size: 15px;
-            margin-bottom: 20px;
-            opacity: 0.8;
-        }
-        .input-group {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 16px;
-            padding: 6px 6px 6px 16px;
+            color: #1c1c1e;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            margin-bottom: 8px;
-            transition: all 0.2s ease;
+            justify-content: center;
+            gap: 10px;
         }
-        .input-group:focus-within {
-            border-color: #007aff;
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        
+        .glass-card p.desc {
+            font-size: 15px;
+            color: #3a3a3c;
+            line-height: 1.4;
+            margin-bottom: 24px;
+            padding: 0 10px;
         }
-        .input-group input {
-            border: none;
-            background: transparent;
-            flex: 1;
-            font-size: 17px;
-            padding: 14px 0;
+
+        /* Input Liquid thần thánh */
+        #idInput {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.65);
+            font-size: 16px;
             outline: none;
             color: #1c1c1e;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+            -webkit-appearance: none;
+        }
+        #idInput:focus {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #0A84FF;
+            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
+        }
+
+        /* Nút bấm chuẩn Apple */
+        #btn {
             width: 100%;
-        }
-        .input-group input::placeholder {
-            color: #8e8e93;
-        }
-        #btn-action {
-            background: #007aff;
-            color: white;
+            padding: 16px;
             border: none;
-            border-radius: 14px;
-            padding: 14px 20px;
+            border-radius: 16px;
+            background: #0A84FF;
+            color: white;
             font-size: 17px;
-            font-weight: 500;
-            width: 100%;
-            margin-top: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            -webkit-appearance: none;
+            box-shadow: 0 8px 20px rgba(10, 132, 255, 0.25);
         }
-        #btn-action:active {
+        #btn:active {
             transform: scale(0.96);
-            background: #0055d4;
+            background: #0069d1;
+            box-shadow: 0 4px 10px rgba(10, 132, 255, 0.2);
         }
-        .error-msg {
+
+        #statusMsg {
+            margin-top: 16px;
+            font-size: 14px;
             color: #ff3b30;
-            font-size: 13px;
-            margin-top: 10px;
             min-height: 20px;
-            transition: opacity 0.2s;
-        }
-        /* Inline SVG Icon cho Add to Home Screen */
-        .icon-svg {
-            display: none; 
         }
     </style>
 </head>
 <body>
 
-    <!-- Icon SVG ẩn để inject vào meta khi add lên màn hình chính -->
-    <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <rect width="100" height="100" rx="22" fill="#0A84FF" />
-        <path d="M50 25 L65 35 L50 55 L35 35 Z" fill="white" opacity="0.9"/>
-        <circle cx="50" cy="55" r="8" fill="white" opacity="0.9"/>
-        <rect x="42" y="60" width="16" height="8" rx="2" fill="white" />
-    </svg>
-
-    <div class="glass-panel">
+    <div class="glass-card">
         <h2>🧠 Bật Phím Tắt</h2>
-        <p class="desc">Sếp hãy nhập ID (ví dụ: QC-...) vào đây rồi bấm nút bên dưới.</p>
+        <p class="desc">Sếp hãy nhập ID vào ô dưới đây<br/>(Ví dụ: <b>vn.com.vng.zalogo</b>)<br/>rồi bấm nút bên dưới nhé!</p>
         
-        <div class="input-group">
-            <input type="text" id="idInput" placeholder="Nhập ID QC-..." autocomplete="off" />
-        </div>
+        <input type="text" id="idInput" placeholder="Nhập ID ở đây..." autocomplete="off" autocapitalize="none" />
+        <button id="btn">Mở ngay</button>
         
-        <button id="btn-action">Mở ngay</button>
-        
-        <div id="errorMessage" class="error-msg"></div>
+        <p id="statusMsg"></p>
     </div>
 
     <script>
-        // --- CẤU HÌNH CỦA SẾP ---
-        // Đặt tên Shortcut y hệt như trong App Shortcuts của sếp (ví dụ: "Đặt AssistiveTouch")
-        const shortcutName = "Đặt AssistiveTouch"; 
-        // -------------------------
+        // 1. Định nghĩa tên Shortcut CHÍNH XÁC 100% mà sếp đang có trong máy
+        const shortcutName = "Đặt AssistiveTouch";
 
+        // 2. Lấy các phần tử HTML
         const inputField = document.getElementById("idInput");
-        const btnAction = document.getElementById("btn-action");
-        const errorMsg = document.getElementById("errorMessage");
+        const actionBtn = document.getElementById("btn");
+        const msgBox = document.getElementById("statusMsg");
 
-        // Tự động xóa lỗi khi sếp gõ chữ
-        inputField.addEventListener("input", () => {
-            errorMsg.innerText = "";
-        });
+        // 3. Hàm xử lý khi bấm nút
+        function runShortcut() {
+            // Lấy dữ liệu và xóa khoảng trắng đầu cuối
+            let contactId = inputField.value.trim();
 
-        btnAction.addEventListener("click", function() {
-            const idValue = inputField.value.trim();
-
-            // Kiểm tra rỗng
-            if (!idValue) {
-                errorMsg.innerText = "Sếp ơi! Chưa nhập ID mà muốn chạy là hơi căng đấy!";
+            // Nếu không có ID thì báo lỗi dễ thương
+            if (!contactId) {
+                msgBox.innerText = "Sếp ơi, chưa nhập ID vào kìa!";
+                msgBox.style.color = "#ff3b30";
                 return;
             }
 
-            // Chuẩn bị URL Scheme an toàn cho iOS 15-18
-            // Các tham số 'name' và 'text' phải được encode để không bị lỗi dấu tiếng Việt
-            const encodedName = encodeURIComponent(shortcutName);
-            const encodedText = encodeURIComponent(idValue);
+            // Nếu có ID, xóa thông báo lỗi cũ
+            msgBox.innerText = "Đang mở Shortcuts...";
+            msgBox.style.color = "#34c759";
 
-            // Lưu ý: &input=text (bắt buộc với Shortcuts nhận đầu vào dạng văn bản)
-            const url = `shortcuts://run-shortcut?name=%C4%90%E1%BA%B7t%20AssistiveTouch${encodedName}&input=text&text=${encodedText}`;
+            // 4. Tạo đường dẫn chạy Shortcuts đúng chuẩn
+            // Công thức: shortcuts://run-shortcut?name=TÊN_SHORTCUT&input=text&text=ID
+            const url = "shortcuts://run-shortcut?name=%C4%90%E1%BA%B7t%20AssistiveTouch" + encodeURIComponent(shortcutName) + 
+                        "&input=text&text=" + encodeURIComponent(contactId);
 
-            // Thực thi mở Shortcut
+            // 5. Thực hiện chuyển hướng
             window.location.href = url;
-        });
+        }
 
-        // Thêm tính năng: Bấm phím Enter trên bàn phím cũng tự động chạy
+        // Gán sự kiện click vào nút Mở ngay
+        actionBtn.addEventListener("click", runShortcut);
+
+        // Gán sự kiện Enter trên bàn phím (hỗ trợ bàn phím bluetooth)
         inputField.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
-                btnAction.click();
+                runShortcut();
             }
         });
     </script>
