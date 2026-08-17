@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <!-- Icon cho Add to Home Screen -->
-  <link rel="apple-touch-icon" href="ICON_URL_512_OR_180.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <!-- (tuỳ chọn) giảm cache khi Sếp sửa HTML -->
   <meta http-equiv="cache-control" content="no-cache" />
 </head>
 
 <body style="font-family: -apple-system; text-align:center; padding-top:60px;">
-  <h2>Quick Call</h2>
+  <h2>AssistiveTouch</h2>
   <p id="desc">Nhấn nút dưới để mở phím tắt.</p>
   <button id="btn"
     style="padding:12px 18px;border-radius:12px;border:0;background:#0A84FF;color:white;font-size:16px;">
@@ -22,7 +22,7 @@
   <script>
     const params = new URLSearchParams(location.search);
     const contactId = params.get("id") || "";     // <-- ID lấy từ URL ?id=
-    const shortcutName = "Quick Call";            // <-- TÊN PHÍM TẮT CON (đúng y chang trong Shortcuts)
+    const shortcutName = "AssistiveTouch";            // <-- TÊN PHÍM TẮT CON (đúng y chang trong Shortcuts)
 
     document.getElementById("btn").onclick = () => {
       if (!contactId) {
