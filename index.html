@@ -130,7 +130,7 @@
     <script>
         // --- CẤU HÌNH CỦA SẾP ---
         // Đặt tên Shortcut y hệt như trong App Shortcuts của sếp (ví dụ: "Đặt AssistiveTouch")
-        const shortcutName = "Test thử xem"; 
+        const shortcutName = "Đặt AssistiveTouch"; 
         // -------------------------
 
         const inputField = document.getElementById("idInput");
@@ -157,7 +157,7 @@
             const encodedText = encodeURIComponent(idValue);
 
             // Lưu ý: &input=text (bắt buộc với Shortcuts nhận đầu vào dạng văn bản)
-            const url = `shortcuts://run-shortcut?name=Test%20th%E1%BB%AD%20xem${encodedName}&input=text&text=${encodedText}`;
+            const url = `shortcuts://run-shortcut?name=%C4%90%E1%BA%B7t%20AssistiveTouch${encodedName}&input=text&text=${encodedText}`;
 
             // Thực thi mở Shortcut
             window.location.href = url;
