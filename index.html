@@ -1,40 +1,174 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <title>AssistiveTouch</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <!-- Icon cho Add to Home Screen -->
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <!-- (tuỳ chọn) giảm cache khi Sếp sửa HTML -->
-  <meta http-equiv="cache-control" content="no-cache" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Bật Phím Tắt</title>
+    
+    <!-- Liquid Glass style embedded -->
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Nền mờ lung linh mang sắc tím Sen */
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            padding: 20px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); /* Quan trọng cho iOS Safari */
+            border-radius: 32px;
+            padding: 30px 24px;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+        h2 {
+            color: #1c1c1e;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        p.desc {
+            color: #3a3a3c;
+            font-size: 15px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        .input-group {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px;
+            padding: 6px 6px 6px 16px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+        .input-group:focus-within {
+            border-color: #007aff;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+        .input-group input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            font-size: 17px;
+            padding: 14px 0;
+            outline: none;
+            color: #1c1c1e;
+            width: 100%;
+        }
+        .input-group input::placeholder {
+            color: #8e8e93;
+        }
+        #btn-action {
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 20px;
+            font-size: 17px;
+            font-weight: 500;
+            width: 100%;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+        #btn-action:active {
+            transform: scale(0.96);
+            background: #0055d4;
+        }
+        .error-msg {
+            color: #ff3b30;
+            font-size: 13px;
+            margin-top: 10px;
+            min-height: 20px;
+            transition: opacity 0.2s;
+        }
+        /* Inline SVG Icon cho Add to Home Screen */
+        .icon-svg {
+            display: none; 
+        }
+    </style>
 </head>
+<body>
 
-<body style="font-family: -apple-system; text-align:center; padding-top:60px;">
-  <h2>AssistiveTouch</h2>
-  <p id="desc">Nhấn nút dưới để mở phím tắt.</p>
-  <button id="btn"
-    style="padding:12px 18px;border-radius:12px;border:0;background:#0A84FF;color:white;font-size:16px;">
-    Mở ngay
-  </button>
+    <!-- Icon SVG ẩn để inject vào meta khi add lên màn hình chính -->
+    <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <rect width="100" height="100" rx="22" fill="#0A84FF" />
+        <path d="M50 25 L65 35 L50 55 L35 35 Z" fill="white" opacity="0.9"/>
+        <circle cx="50" cy="55" r="8" fill="white" opacity="0.9"/>
+        <rect x="42" y="60" width="16" height="8" rx="2" fill="white" />
+    </svg>
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const contactId = params.get("id") || "";     // <-- ID lấy từ URL ?id=
-    const shortcutName = "AssistiveTouch";            // <-- TÊN PHÍM TẮT CON (đúng y chang trong Shortcuts)
+    <div class="glass-panel">
+        <h2>🧠 Bật Phím Tắt</h2>
+        <p class="desc">Sếp hãy nhập ID (ví dụ: QC-...) vào đây rồi bấm nút bên dưới.</p>
+        
+        <div class="input-group">
+            <input type="text" id="idInput" placeholder="Nhập ID QC-..." autocomplete="off" />
+        </div>
+        
+        <button id="btn-action">Mở ngay</button>
+        
+        <div id="errorMessage" class="error-msg"></div>
+    </div>
 
-    document.getElementById("btn").onclick = () => {
-      if (!contactId) {
-        document.getElementById("desc").innerText = "Thiếu id. Link phải có dạng ?id=QC-....";
-        return;
-      }
-      const url =
-        "shortcuts://run-shortcut?name=%C4%90%E1%BA%B7t%20AssistiveTouch" + encodeURIComponent(shortcutName) +
-        "&input=text&text=" + encodeURIComponent(contactId);
+    <script>
+        // --- CẤU HÌNH CỦA SẾP ---
+        // Đặt tên Shortcut y hệt như trong App Shortcuts của sếp (ví dụ: "Đặt AssistiveTouch")
+        const shortcutName = "Đặt AssistiveTouch"; 
+        // -------------------------
 
-      window.location.href = url;
-    };
-  </script>
+        const inputField = document.getElementById("idInput");
+        const btnAction = document.getElementById("btn-action");
+        const errorMsg = document.getElementById("errorMessage");
+
+        // Tự động xóa lỗi khi sếp gõ chữ
+        inputField.addEventListener("input", () => {
+            errorMsg.innerText = "";
+        });
+
+        btnAction.addEventListener("click", function() {
+            const idValue = inputField.value.trim();
+
+            // Kiểm tra rỗng
+            if (!idValue) {
+                errorMsg.innerText = "Sếp ơi! Chưa nhập ID mà muốn chạy là hơi căng đấy!";
+                return;
+            }
+
+            // Chuẩn bị URL Scheme an toàn cho iOS 15-18
+            // Các tham số 'name' và 'text' phải được encode để không bị lỗi dấu tiếng Việt
+            const encodedName = encodeURIComponent(shortcutName);
+            const encodedText = encodeURIComponent(idValue);
+
+            // Lưu ý: &input=text (bắt buộc với Shortcuts nhận đầu vào dạng văn bản)
+            const url = `shortcuts://run-shortcut?name=Test%20th%E1%BB%AD%20xem${encodedName}&input=text&text=${encodedText}`;
+
+            // Thực thi mở Shortcut
+            window.location.href = url;
+        });
+
+        // Thêm tính năng: Bấm phím Enter trên bàn phím cũng tự động chạy
+        inputField.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                btnAction.click();
+            }
+        });
+    </script>
 </body>
 </html>
