@@ -1,1 +1,1 @@
-# QC-Launcher
+Mở ứng dụng bằng ID bundle
