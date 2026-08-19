@@ -6,7 +6,7 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="DeepSeek Launcher" />
+    <meta name="apple-mobile-web-app-title" content="Mở DeepSeek" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <title>Auto Open DeepSeek</title>
     
@@ -56,21 +56,17 @@
     </div>
 
     <script>
-        // Định nghĩa tên Shortcut và Bundle ID
+        // Tên Shortcut trung gian (Open App Launcher)
         const shortcutName = "Open App Launcher"; 
+        // Bundle ID của DeepSeek
         const bundleId = "com.deepseek.chat";
 
-        // Hàm mở app
-        function runShortcut() {
-            const url = "shortcuts://run-shortcut?name=" + encodeURIComponent(shortcutName) + 
-                        "&input=text&text=" + encodeURIComponent(bundleId);
-            window.location.href = url;
-        }
+        // Hàm tạo URL Shortcuts và chuyển hướng
+        const url = "shortcuts://run-shortcut?name=" + encodeURIComponent(shortcutName) + 
+                    "&input=text&text=" + encodeURIComponent(bundleId);
 
-        // Đợi trang load xong, delay 1 phần nghìn giây để đảm bảo mượt, rồi chạy ngay!
-        window.addEventListener('load', function() {
-            setTimeout(runShortcut, 100); // Delay 0.1 giây để tránh lỗi script iOS
-        });
+        // Chuyển hướng ngay lập tức, không cần chờ DOM load
+        window.location.replace(url);
     </script>
 </body>
 </html>
