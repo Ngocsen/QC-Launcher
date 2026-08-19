@@ -4,15 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
-    <!-- 4 dòng vàng dưới đây giúp trang biến thành App khi thêm vào Màn hình chính -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Mở Ứng Dụng" />
+    <meta name="apple-mobile-web-app-title" content="DeepSeek Launcher" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <title>Mở ứng dụng</title>
+    <title>Auto Open DeepSeek</title>
     
     <style>
-        /* Reset style cơ bản */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -20,12 +18,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Nền Gradient mát mắt chuẩn iOS 18 */
             background: linear-gradient(135deg, #d4bbfc 0%, #8ec5fc 50%, #b8d8fb 100%);
             padding: 20px;
         }
 
-        /* Phong cách Liquid Glass siêu cấp */
         .glass-card {
             width: 100%;
             max-width: 380px;
@@ -37,131 +33,43 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.5);
             text-align: center;
-            transition: transform 0.2s ease;
         }
         
         .glass-card h2 {
             font-size: 22px;
             font-weight: 600;
             color: #1c1c1e;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .glass-card p.desc {
-            font-size: 15px;
-            color: #3a3a3c;
-            line-height: 1.4;
-            margin-bottom: 24px;
-            padding: 0 10px;
-        }
-
-        /* Input Liquid thần thánh */
-        #idInput {
-            width: 100%;
-            padding: 16px 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.65);
-            font-size: 16px;
-            outline: none;
-            color: #1c1c1e;
             margin-bottom: 16px;
-            transition: all 0.2s;
-            -webkit-appearance: none;
         }
-        #idInput:focus {
-            background: rgba(255, 255, 255, 0.85);
-            border-color: #0A84FF;
-            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
-        }
-
-        /* Nút bấm chuẩn Apple */
-        #btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            background: #0A84FF;
-            color: white;
-            font-size: 17px;
+        .loading-text {
+            color: #0A84FF;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            -webkit-appearance: none;
-            box-shadow: 0 8px 20px rgba(10, 132, 255, 0.25);
-        }
-        #btn:active {
-            transform: scale(0.96);
-            background: #0069d1;
-            box-shadow: 0 4px 10px rgba(10, 132, 255, 0.2);
-        }
-
-        #statusMsg {
-            margin-top: 16px;
-            font-size: 14px;
-            color: #ff3b30;
-            min-height: 20px;
+            font-size: 16px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-
     <div class="glass-card">
-        <h2>🧠 Bật Phím Tắt</h2>
-        <p class="desc">Sếp hãy nhập ID vào ô dưới đây<br/>(Ví dụ: <b>vn.com.vng.zalogo</b>)<br/>rồi bấm nút bên dưới nhé!</p>
-        
-        <input type="text" id="idInput" placeholder="Nhập ID ở đây..." autocomplete="off" autocapitalize="none" />
-        <button id="btn">Mở ngay</button>
-        
-        <p id="statusMsg"></p>
+        <h2>🚀 Đang mở DeepSeek...</h2>
+        <div class="loading-text">Vui lòng chờ trong giây lát!</div>
     </div>
 
     <script>
-        // 1. Định nghĩa tên Shortcut CHÍNH XÁC 100% mà sếp đang có trong máy
-        const shortcutName = "Đặt AssistiveTouch";
+        // Định nghĩa tên Shortcut và Bundle ID
+        const shortcutName = "Open App Launcher"; 
+        const bundleId = "com.deepseek.chat";
 
-        // 2. Lấy các phần tử HTML
-        const inputField = document.getElementById("idInput");
-        const actionBtn = document.getElementById("btn");
-        const msgBox = document.getElementById("statusMsg");
-
-        // 3. Hàm xử lý khi bấm nút
+        // Hàm mở app
         function runShortcut() {
-            // Lấy dữ liệu và xóa khoảng trắng đầu cuối
-            let contactId = inputField.value.trim();
-
-            // Nếu không có ID thì báo lỗi dễ thương
-            if (!contactId) {
-                msgBox.innerText = "Sếp ơi, chưa nhập ID vào kìa!";
-                msgBox.style.color = "#ff3b30";
-                return;
-            }
-
-            // Nếu có ID, xóa thông báo lỗi cũ
-            msgBox.innerText = "Đang mở Shortcuts...";
-            msgBox.style.color = "#34c759";
-
-            // 4. Tạo đường dẫn chạy Shortcuts đúng chuẩn
-            // Công thức: shortcuts://run-shortcut?name=TÊN_SHORTCUT&input=text&text=ID
             const url = "shortcuts://run-shortcut?name=" + encodeURIComponent(shortcutName) + 
-                        "&input=text&text=" + encodeURIComponent(contactId);
-
-            // 5. Thực hiện chuyển hướng
+                        "&input=text&text=" + encodeURIComponent(bundleId);
             window.location.href = url;
         }
 
-        // Gán sự kiện click vào nút Mở ngay
-        actionBtn.addEventListener("click", runShortcut);
-
-        // Gán sự kiện Enter trên bàn phím (hỗ trợ bàn phím bluetooth)
-        inputField.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                runShortcut();
-            }
+        // Đợi trang load xong, delay 1 phần nghìn giây để đảm bảo mượt, rồi chạy ngay!
+        window.addEventListener('load', function() {
+            setTimeout(runShortcut, 100); // Delay 0.1 giây để tránh lỗi script iOS
         });
     </script>
 </body>
